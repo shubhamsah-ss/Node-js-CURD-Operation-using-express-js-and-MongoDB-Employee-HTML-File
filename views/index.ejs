@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>
+    <%= title %>
+  </title>
+  <link rel="stylesheet" href="/stylesheets/style.css" />
+
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css"
+    integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/css/bootstrap.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.slim.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<body>
+
+  <% if (success != '') {%>
+  <div class="alert alert-success">
+    <strong>Success!</strong> <%= success %>
+    <% } %>
+  </div>
+
+  <div class="col-md-12 mb-5">
+    <h1>Filter Employee Records</h1>
+    <form action="/search/" id="searchForm" class="form-inline" method="post" role="form">
+
+      <div class="col-md-3">
+        <div class="form-group">
+          <label for="fltrname" class="col-md-12 ">By Name</label>
+          <div class="col-md-12">
+            <input type="text" id="searchName" class="form-control" name="fltrname" placeholder="Enter Name">
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label for="fltremail" class="col-md-12">By Email</label>
+          <div class="col-md-12">
+            <input type="text" class="form-control" name="fltremail" placeholder="Enter Email">
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label for="fltremptype" class="col-md-12">By Employee Type</label>
+          <div class="col-md-12">
+            <select class="form-control " name="fltremptype">
+              <option value="Hourly">Hourly</option>
+              <option value="Fixed">Fixed</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="form-group">
+          <label for="submit" class="col-md-12 control-label">&nbsp;</label>
+
+          <div class="col-md-12">
+            <input type="submit" class="form-control btn btn-primary btn-block" name="submit" value="Filter">
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+
+  <div class="table-responsive table-hover table-sm">
+    <table class="table">
+      <h2><%= title %></h2>
+      <thead class="thead-dark">
+        <tr>
+          <th>Name</th>
+          <th>Email</th>
+          <th>Employee Type</th>
+          <th>Hourly Rate</th>
+          <th>Total Hour</th>
+          <th>Total Amount</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% if(records.length>0 ){ %>
+          <% records.forEach(function(row){ %>
+            <tr>
+              <td>
+                <%= row.name %>
+              </td>
+              <td>
+                <%= row.email %>
+              </td>
+              <td>
+                <%= row.etype %>
+              </td>
+              <td>
+                <%= row.hourlyrate %>
+              </td>
+              <td>
+                <%= row.totalHour %>
+              </td>
+              <td>
+                <%= row.total %>
+              </td>
+              <td>
+                <a class="btn btn-primary btn-sm" href="/edit/<%= row._id%>"><i class="far fa-edit"></i></a>
+                <a class="btn btn-danger btn-sm" href="/delete/<%= row._id%>"><i class="fa fa-trash-alt"></i></a>
+              </td>
+            </tr>
+            <% });} else{ %>
+              <tr>
+                <td>No records found</td>
+              </tr>
+              <% } %>
+      </tbody>
+    </table>
+  </div>
+  <div class="container">
+    <div class="row justify-content-md-center">
+      <div id="signupbox" style="margin-top:50px" class=" ">
+        <div class="card">
+          <div class="card-header bg-primary text-light">
+            <div class="card-title display-4">Add new employee details</div>
+          </div>
+          <div class="card-body">
+            <!-- <form id="EmployeeForm" class="form-horizontal" method="post"
+              enctype="multipart/form-data"> -->
+            <form action="/" id="EmployeeForm" class="form ml-5" method="post">
+
+              <div id="signupalert" style="display:none" class="alert alert-danger">
+                <p>Error:</p>
+                <span></span>
+              </div>
+
+              <div class="form-group">
+                <label for="firstname" class="col-md-3 control-label">Name</label>
+                <div class="col-md-9">
+                  <input type="text" class="form-control" name="uname" placeholder="Enter Your Name">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="email" class="col-md-3 control-label">Email</label>
+                <div class="col-md-9">
+                  <input type="text" class="form-control" name="email" placeholder="Email Address">
+                </div>
+              </div>
+
+
+              <div class="form-group">
+                <label for="lastname" class="col-md-3 control-label">Employee Type</label>
+                <div class="col-md-9">
+                  <select class="form-control" name="emptype">
+                    <option value="Hourly">Hourly</option>
+                    <option value="Fixed">Fixed</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="password" class="col-md-3 control-label">Hourly Rate</label>
+                <div class="col-md-9">
+                  <input type="text" class="form-control" name="hrlyrate" placeholder="Enter Hourly Rate">
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label for="icode" class="col-md-3 control-label"> Total Hour</label>
+                <div class="col-md-9">
+                  <input type="text" class="form-control" name="ttlhr" placeholder="Enter Total Hours">
+                </div>
+              </div>
+
+              <!-- <div class="form-group">
+                <label for="icode" class="col-md-3 control-label"> Profile Image</label>
+                <div class="col-md-9">
+                  <input type="file" class="form-control" name="file">
+                </div>
+              </div> -->
+
+              <div class="form-group mt-5">
+                <!-- Button -->
+                <div class="col-md-offset-3 col-md-9">
+                  <input type="submit" name="submit" value="ADD" class="btn btn-primary btn-block">
+                </div>
+              </div>
+
+
+
+
+
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</body>
+
+</html>
